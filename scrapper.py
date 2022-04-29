@@ -1,7 +1,8 @@
 import requests
 import json
 from bs4 import BeautifulSoup
-url = "https://www.ceneo.pl/63490289#tab=reviews"
+item_id = input("Insert item id:\n")
+url = f"https://www.ceneo.pl/{item_id}#tab=reviews"
 all_opinions = []
 while(url):
     response = requests.get(url)
@@ -39,8 +40,8 @@ while(url):
         }
         all_opinions.append(single_opinion)
     try:
-        url = "https://www.ceneo.pl/63490289" + page.select_one("a.pagination__next")["href"]
+        url = f"https://www.ceneo.pl/{item_id}" + page.select_one("a.pagination__next")["href"]
     except TypeError:
         url = None
-with open("opinions/63490289.json", 'w', encoding="UTF-8") as jf:
+with open(f"opinions/{item_id}.json", 'w', encoding="UTF-8") as jf:
     json.dump(all_opinions, jf, indent=4, ensure_ascii=False)
